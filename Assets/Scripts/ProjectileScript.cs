@@ -2,20 +2,19 @@ using UnityEngine;
 
 public class ProjectileScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Destroy(gameObject, 10);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Auto-destroy after 10 seconds to prevent memory leaks from missed collisions
+        Destroy(gameObject, 10f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Notify enemy so it can play death effects before being destroyed
+        EnemyScript enemy = collision.gameObject.GetComponent<EnemyScript>();
+        if (enemy != null)
+            enemy.Die();
+
         Destroy(gameObject);
     }
 }
