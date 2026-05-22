@@ -181,7 +181,7 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &755420160
 GameObject:
@@ -382,6 +382,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1107554928505526695, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
       propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907376031614091141, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
+      propertyPath: m_Radius
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7424450034244706576, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
