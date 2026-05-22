@@ -1,10 +1,6 @@
 using System;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.UI;
 
 public class ControlManager : MonoBehaviour
 {
@@ -15,7 +11,9 @@ public class ControlManager : MonoBehaviour
     InputAction jumpAction;
     InputAction runAction;
     InputAction shootAction;
-    Vector2 MoveValue { get; set; }
+    public Vector2 MoveValue { get; private set; }
+
+    private bool _lastRunState;
 
     //Events
     public event Action<Vector2> Move;
@@ -33,52 +31,39 @@ public class ControlManager : MonoBehaviour
         }
         Instance = this;
 
-        //Find input actions from the Input System
+        // Find input actions — log errors if any name is misspelled
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         runAction = InputSystem.actions.FindAction("Run");
         shootAction = InputSystem.actions.FindAction("Shoot");
+
+        if (moveAction == null) Debug.LogError("ControlManager: 'Move' action not found in Input System!");
+        if (jumpAction == null) Debug.LogError("ControlManager: 'Jump' action not found in Input System!");
+        if (runAction == null) Debug.LogError("ControlManager: 'Run' action not found in Input System!");
+        if (shootAction == null) Debug.LogError("ControlManager: 'Shoot' action not found in Input System!");
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //Invoke move action
+        // Move — broadcast every frame so PlayerManagerScript always has current input
+        // (triggered only fires on the first pressed frame, missing held movement)
         MoveValue = moveAction.ReadValue<Vector2>();
-        if (moveAction.triggered)
-            Move?.Invoke(MoveValue);
-        else if (moveAction.WasReleasedThisFrame())
-            Move?.Invoke(Vector2.zero);
+        Move?.Invoke(MoveValue);
 
-        //Invoke jump action
-        if (jumpAction.triggered)
-        {
-            Debug.Log($"jump trigger: {jumpAction.activeControl}");
+        // Jump — one-shot on press, correct
+        if (jumpAction.WasPressedThisFrame())
             Jump?.Invoke();
+
+        // Run — only fire on state change to avoid spamming the event every frame
+        bool running = runAction.ReadValue<float>() > 0.5f;
+        if (running != _lastRunState)
+        {
+            _lastRunState = running;
+            Run?.Invoke(running);
         }
 
-        //Invoke run action
-        switch(runAction.ReadValue<float>())
-        {
-            case 1:
-                Run?.Invoke(true);
-                break;
-            case 0:
-                Run?.Invoke(false);
-                break;
-        }
-
-        //Invoke shoot action
-        if(shootAction.triggered)
-        {
-            Debug.Log($"Shoot trigger: {shootAction.activeControl}");
+        // Shoot — one-shot on press, correct
+        if (shootAction.WasPressedThisFrame())
             Shoot?.Invoke();
-        }
     }
 }
