@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7710118524989919877
+--- !u!1 &5838159903072501711
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,65 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8894284447513065228}
-  - component: {fileID: 213945615799507332}
-  - component: {fileID: 8575258112070077645}
-  - component: {fileID: 7424450034244706576}
-  - component: {fileID: 1107554928505526695}
-  - component: {fileID: 5443290816979314544}
+  - component: {fileID: 1292916438788179681}
+  - component: {fileID: 8111940692330333830}
+  - component: {fileID: 1514120554310062897}
+  - component: {fileID: 4425398299261218390}
+  - component: {fileID: 2605430060918202915}
+  - component: {fileID: 6379816975537270220}
   m_Layer: 0
-  m_Name: Player
-  m_TagString: Player
+  m_Name: Deity
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8894284447513065228
+--- !u!4 &1292916438788179681
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7710118524989919877}
+  m_GameObject: {fileID: 5838159903072501711}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.240211, y: 1.240211, z: 1.240211}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3.2, y: 3.2, z: 3.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &213945615799507332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7710118524989919877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a26684ede7691bc46a969025eb7da6b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerManagerScript
-  _rigidBody: {fileID: 1107554928505526695}
-  _collider: {fileID: 5443290816979314544}
-  _projectile: {fileID: 4692120673406047300, guid: e63168282f94a2d42b6ed5cc2d5ef69c, type: 3}
-  _projectileCollider: {fileID: 2078675932800980374, guid: e63168282f94a2d42b6ed5cc2d5ef69c, type: 3}
-  _animator: {fileID: 7424450034244706576}
-  _walkSpeed: 2
-  _maxRunSpeed: 2
-  _jumpForce: 3.9
-  runSpeed: 2
-  _projectileSpeed: 2
-  _projectileOffsetY: 0
---- !u!212 &8575258112070077645
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!212 &8111940692330333830
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7710118524989919877}
+  m_GameObject: {fileID: 5838159903072501711}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -108,27 +85,27 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 4723107735738678597, guid: 47fe6a5e69b690f4dbb1268a4a2de814, type: 3}
+  m_Sprite: {fileID: 4723107735738678597, guid: fc71b31ce9cc12a4482300c5cd871412, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.11, y: 5.12}
+  m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!95 &7424450034244706576
+--- !u!95 &1514120554310062897
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7710118524989919877}
+  m_GameObject: {fileID: 5838159903072501711}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e2ebd229d08d0bd46b72e611dfaf7ba4, type: 2}
+  m_Controller: {fileID: 9100000, guid: fd95781c7de095642b9cc5e352ce5ee3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -140,19 +117,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!50 &1107554928505526695
+--- !u!50 &4425398299261218390
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7710118524989919877}
+  m_GameObject: {fileID: 5838159903072501711}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -165,15 +142,15 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &5443290816979314544
+--- !u!70 &2605430060918202915
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7710118524989919877}
+  m_GameObject: {fileID: 5838159903072501711}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -201,6 +178,19 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.019966133, y: 0.32238188}
-  m_Size: {x: 0.20731804, y: 0.65212667}
+  m_Offset: {x: -0.05374968, y: 0.40306598}
+  m_Size: {x: 0.32207304, y: 0.8062204}
   m_Direction: 0
+--- !u!114 &6379816975537270220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5838159903072501711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02dd346ba32ad654c9cb74828aa9d2b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DietyManagerScript
+  player: {fileID: 7710118524989919877, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}

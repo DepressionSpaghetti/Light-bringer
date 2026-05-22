@@ -51,7 +51,7 @@ public class ControlManager : MonoBehaviour
     {
         //Invoke move action
         MoveValue = moveAction.ReadValue<Vector2>();
-        if (moveAction.triggered)
+        if (moveAction.triggered || moveAction.WasPerformedThisFrame())
             Move?.Invoke(MoveValue);
         else if (moveAction.WasReleasedThisFrame())
             Move?.Invoke(Vector2.zero);
