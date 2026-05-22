@@ -12,7 +12,8 @@ public class PlayerManagerScript : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Rigidbody2D _projectile;
-    [SerializeField]private Collider2D _projectileCollider;
+    [SerializeField] private Collider2D _projectileCollider;
+    [SerializeField] private Animator _animator;
 
     //movement variables
     private Vector2 _movementInput;
@@ -34,6 +35,8 @@ public class PlayerManagerScript : MonoBehaviour
 
     void Awake()
     {
+        _animator = GetComponent<Animator>();
+
         if(ControlManager.Instance == null)
         {
             Debug.LogError("ControlManager instance not found.");
@@ -108,6 +111,9 @@ public class PlayerManagerScript : MonoBehaviour
             FaceRight();
         else if (value.x < 0f && _facingRight)
             FaceLeft();
+
+        _animator.SetBool("Moving", value != Vector2.zero ? true : false);
+        _animator.SetBool("Walking", value != Vector2.zero ? true : false);
     }
 
     void OnJump()
@@ -117,13 +123,13 @@ public class PlayerManagerScript : MonoBehaviour
             Vector2 v = _rigidBody.linearVelocity;
             v.y = _jumpForce;
             _rigidBody.linearVelocity = v;
+            _animator.SetTrigger("Jump");
 
             //old jump velocity code
             //_rigidBody.AddForceY(_jumpForce + _rigidBody.linearVelocityX, ForceMode2D.Impulse);
             //_rigidBody.linearVelocityY = _jumpForce;
             //_rigidBody.linearVelocity = Vector2.ClampMagnitude(_rigidBody.linearVelocity, _walkSpeed * runSpeed);
         }
-
     }
 
     void OnRun(bool value)
@@ -132,11 +138,14 @@ public class PlayerManagerScript : MonoBehaviour
         {
             case true:
                 runSpeed = _maxRunSpeed;
+                _animator.SetBool("Running", value);
                 break;
             case false:
                 runSpeed = 1;
+                _animator.SetBool("Running", value);
                 break;
         }
+
     }
 
     void OnShoot()
@@ -168,13 +177,19 @@ public class PlayerManagerScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
+        {
             isAirborne = false;
+            _animator.SetBool("isAirborne", false);
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
+        {
             isAirborne = true;
+            _animator.SetBool("isAirborne", true);
+        }
     }
 
     private void FaceRight()
