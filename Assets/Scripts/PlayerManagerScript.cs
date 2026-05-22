@@ -12,7 +12,8 @@ public class PlayerManagerScript : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Rigidbody2D _projectile;
-    [SerializeField]private Collider2D _projectileCollider;
+    [SerializeField] private Collider2D _projectileCollider;
+    [SerializeField] private Animator _animator;
 
     //movement variables
     private Vector2 _movementInput;
@@ -34,6 +35,8 @@ public class PlayerManagerScript : MonoBehaviour
 
     void Awake()
     {
+        _animator = GetComponent<Animator>();
+
         if(ControlManager.Instance == null)
         {
             Debug.LogError("ControlManager instance not found.");
@@ -108,6 +111,8 @@ public class PlayerManagerScript : MonoBehaviour
             FaceRight();
         else if (value.x < 0f && _facingRight)
             FaceLeft();
+
+        _animator.SetBool("Moving", value != Vector2.zero ? true : false);
     }
 
     void OnJump()
@@ -124,6 +129,8 @@ public class PlayerManagerScript : MonoBehaviour
             //_rigidBody.linearVelocity = Vector2.ClampMagnitude(_rigidBody.linearVelocity, _walkSpeed * runSpeed);
         }
 
+        _animator.SetTrigger("Jump");
+
     }
 
     void OnRun(bool value)
@@ -137,6 +144,8 @@ public class PlayerManagerScript : MonoBehaviour
                 runSpeed = 1;
                 break;
         }
+
+        _animator.SetBool("Running", value);
     }
 
     void OnShoot()
