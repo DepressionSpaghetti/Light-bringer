@@ -16,7 +16,10 @@ public class ProjectileScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
-        Destroy(collision.gameObject); //test
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+            Destroy(collision.gameObject); //test
+        }
     }
 }

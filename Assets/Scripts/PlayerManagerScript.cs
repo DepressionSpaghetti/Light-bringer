@@ -32,6 +32,7 @@ public class PlayerManagerScript : MonoBehaviour
 
     //projectile variables
     [SerializeField] private float _projectileSpeed;
+    [SerializeField] private float _projectileOffsetY;
 
     void Awake()
     {
@@ -113,7 +114,7 @@ public class PlayerManagerScript : MonoBehaviour
             FaceLeft();
 
         _animator.SetBool("Moving", value != Vector2.zero ? true : false);
-        _animator.SetBool("Walking", value != Vector2.zero ? true : false);
+        _animator.SetBool("Walking", value != Vector2.zero && runSpeed == 1 ? true : false);
     }
 
     void OnJump()
@@ -139,6 +140,7 @@ public class PlayerManagerScript : MonoBehaviour
             case true:
                 runSpeed = _maxRunSpeed;
                 _animator.SetBool("Running", value);
+                _animator.SetBool("Walking", false);
                 break;
             case false:
                 runSpeed = 1;
@@ -152,15 +154,15 @@ public class PlayerManagerScript : MonoBehaviour
     {
         //spawn projectile slightly in front of the player based on facing direction
         Vector2 spawnOffset = _facingRight ? Vector2.right * 0.3f : Vector2.left * 0.3f;
+        spawnOffset.y += _projectileOffsetY;
         Vector2 spawnPos = (Vector2)transform.position + spawnOffset;
         
         Rigidbody2D p = Instantiate(_projectile, spawnPos, Quaternion.identity);
 
         //ignore collision between player and projectile
-        //Collider2D projCol = p.GetComponent<Collider2D>();
         if(_projectileCollider != null && _collider != null)
         {
-            Physics2D.IgnoreCollision(_collider, _projectileCollider);
+            Physics2D.IgnoreCollision(_collider, p.GetComponent<Collider2D>(), true);
         }
 
         //set projectile direction based on player facing direction
@@ -170,17 +172,23 @@ public class PlayerManagerScript : MonoBehaviour
         p.transform.rotation = _facingRight ? Quaternion.identity : Quaternion.Euler(0f, 180f, 0f);
         p.linearVelocityX = projDirection.x * _projectileSpeed;
 
+        _animator.SetTrigger("Attack");
         //old
         //p.linearVelocity = transform.right * _projectileSpeed;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.CompareTag("Ground"))
         {
             isAirborne = false;
             _animator.SetBool("isAirborne", false);
         }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+
     }
 
     void OnCollisionExit2D(Collision2D collision)
