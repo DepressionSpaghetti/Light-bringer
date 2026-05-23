@@ -40,6 +40,9 @@ public class PlayerManagerScript : MonoBehaviour
     public int CurrentHealth { get; private set; } = 50;
     [SerializeField] private float _maxHealth = 50;
     public int CurHP;
+    private bool isBeingDamaged = false;
+    private bool diedYet = false;
+    public bool Dead { get; private set; }
 
     //time
     private float period = 0.0f;
@@ -74,16 +77,27 @@ public class PlayerManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        while(CurrentHealth < _maxHealth && Time.time > period)
+        CurHP = CurrentHealth;
+        if ((!isBeingDamaged && !Dead) && CurrentHealth < _maxHealth && Time.time > period)
         {
-            period += _healTime;
+            period = Time.time + _healTime;
             CurrentHealth++;
-            CurHP = CurrentHealth;
         }
 
-        if(CurrentHealth <= 0)
+        else if (isBeingDamaged && CurrentHealth > 0 && Time.time > periodDamage)
+        {
+            Debug.Log("Damaging");
+            periodDamage = Time.time + _damageTime;
+            CurrentHealth--;
+        }
+
+        if (CurrentHealth <= 0 && !diedYet)
         {
             //death logic here
+            Dead = true;
+            _animator.SetTrigger("Died");
+            isBeingDamaged = false;
+            _animator.SetBool("isBeingDamaged", false);
         }
 
     }
@@ -220,18 +234,6 @@ public class PlayerManagerScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if(collision.CompareTag("EnemyDamager"))
-        {
-            while (CurrentHealth > 0 && Time.time > periodDamage)
-            {
-                periodDamage += _damageTime;
-                CurrentHealth--;
-                CurHP = CurrentHealth;
-            }
-        }
-    }
 
     void OnCollisionExit2D(Collision2D collision)
     {
@@ -239,6 +241,24 @@ public class PlayerManagerScript : MonoBehaviour
         {
             isAirborne = true;
             _animator.SetBool("isAirborne", true);
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D trigger)
+    {
+        if (trigger.gameObject.CompareTag("EnemyDamager"))
+        {
+            isBeingDamaged = true;
+            _animator.SetBool("isBeingDamaged", true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D trigger)
+    {
+        if(trigger.gameObject.CompareTag("EnemyDamager"))
+        {
+            isBeingDamaged = false;
+            _animator.SetBool("isBeingDamaged", false);
         }
     }
 

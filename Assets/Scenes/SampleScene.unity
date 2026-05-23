@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 403181666}
   - component: {fileID: 403181664}
   - component: {fileID: 403181668}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -795,6 +795,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1202909518317964313, guid: 6c15fa37f6a12c04dbdc1e77364b815d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2774963995489589432, guid: 6c15fa37f6a12c04dbdc1e77364b815d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.804
@@ -846,8 +850,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7794489261755527398, guid: 6c15fa37f6a12c04dbdc1e77364b815d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1351571368}
   m_SourcePrefab: {fileID: 100100000, guid: 6c15fa37f6a12c04dbdc1e77364b815d, type: 3}
+--- !u!1 &1351571363 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7794489261755527398, guid: 6c15fa37f6a12c04dbdc1e77364b815d, type: 3}
+  m_PrefabInstance: {fileID: 814050456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1351571368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351571363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc147eacd9bda1a418d5061dc7138c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManagerScript2
+  _rigidBody: {fileID: 1192441144796349839, guid: 6c15fa37f6a12c04dbdc1e77364b815d, type: 3}
+  _maxSpeed: 1.3
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _groundCheckDistance: 1
+  _groundCheckAhead: 0.5
+  _decisionIntervalMin: 1
+  _decisionIntervalMax: 3
+  _idleChance: 0.29
+  _turnChance: 0.44
 --- !u!1001 &2031910475
 PrefabInstance:
   m_ObjectHideFlags: 0
