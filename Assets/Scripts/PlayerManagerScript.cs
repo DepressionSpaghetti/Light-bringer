@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Unity.VisualScripting;
 
 //using Unity.AppUI.UI;
@@ -56,7 +56,7 @@ public class PlayerManagerScript : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
 
-        if(ControlManager.Instance == null)
+        if (ControlManager.Instance == null)
         {
             Debug.LogError("ControlManager instance not found.");
             return;
@@ -145,6 +145,7 @@ public class PlayerManagerScript : MonoBehaviour
 
     void OnMove(Vector2 value)
     {
+        if (!_inputEnabled) return;
         _movementInput = value;
 
         //flip facing based on horizontal input
@@ -159,6 +160,7 @@ public class PlayerManagerScript : MonoBehaviour
 
     void OnJump()
     {
+        if (!_inputEnabled) return;
         if (!isAirborne)
         {
             Vector2 v = _rigidBody.linearVelocity;
@@ -175,6 +177,7 @@ public class PlayerManagerScript : MonoBehaviour
 
     void OnRun(bool value)
     {
+        if (!_inputEnabled) return;
         switch (value)
         {
             case true:
@@ -219,8 +222,8 @@ public class PlayerManagerScript : MonoBehaviour
             _animator.SetTrigger("Attack");
             _lastAttackTime = Time.time;
 
+        _animator.SetTrigger("Attack");
         }
-        
         //old
         //p.linearVelocity = transform.right * _projectileSpeed;
     }
@@ -232,6 +235,11 @@ public class PlayerManagerScript : MonoBehaviour
             isAirborne = false;
             _animator.SetBool("isAirborne", false);
         }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+
     }
 
 
@@ -273,4 +281,28 @@ public class PlayerManagerScript : MonoBehaviour
         _facingRight = false;
         transform.rotation = Quaternion.Euler(0f, 180f, 0f);
     }
+
+    // -------------------------------------------------------------------------
+    // Input enable / disable � called by CheckpointTrigger and GameManager
+    private bool _inputEnabled = true;
+    public void DisableInput()
+    {
+        _inputEnabled = false;
+        _movementInput = Vector2.zero;
+    }
+
+    public void EnableInput()
+    {
+        _inputEnabled = true;
+    }
+
+    public void Die()
+    {
+        DisableInput();
+        if (GameManager.Instance != null)
+            GameManager.Instance.PlayerDied();
+    }
+
+    // -------------------------------------------------------------------------
+
 }
