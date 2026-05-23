@@ -55,10 +55,15 @@ MonoBehaviour:
   _animator: {fileID: 7424450034244706576}
   _walkSpeed: 2
   _maxRunSpeed: 2
-  _jumpForce: 3.9
+  _jumpForce: 5
   runSpeed: 2
-  _projectileSpeed: 2
-  _projectileOffsetY: 0
+  _projectileSpeed: 10
+  _projectileOffsetY: 0.5
+  attackDelay: 1.15
+  _maxHealth: 50
+  CurHP: 0
+  _healTime: 0.1
+  _damageTime: 0.1
 --- !u!212 &8575258112070077645
 SpriteRenderer:
   serializedVersion: 2

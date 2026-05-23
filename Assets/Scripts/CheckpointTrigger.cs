@@ -7,7 +7,7 @@ public class CheckpointTrigger : MonoBehaviour
     [SerializeField] private Vector2 _respawnOffset = new Vector2(0f, 0.5f);
 
     private bool _hasTriggered = false;
-    private PlayerMovement _player;
+    private PlayerManagerScript _player;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -19,11 +19,13 @@ public class CheckpointTrigger : MonoBehaviour
         if (_saveRespawnPosition && GameManager.Instance != null)
             GameManager.Instance.SaveCheckpoint((Vector2)transform.position + _respawnOffset);
 
-        _player = other.GetComponent<PlayerMovement>();
+        // Fixed: was GetComponent<PlayerMovement>() ? wrong script, always returned null
+        _player = other.GetComponent<PlayerManagerScript>();
         if (_player != null)
             _player.DisableInput();
 
-        if (NarrationManager.Instance != null && _narrationKey != "")
+        // string.IsNullOrEmpty handles both null and "" safely
+        if (NarrationManager.Instance != null && !string.IsNullOrEmpty(_narrationKey))
         {
             NarrationManager.Instance.OnNarrationComplete += OnNarrationDone;
             NarrationManager.Instance.Play(_narrationKey);
@@ -37,7 +39,11 @@ public class CheckpointTrigger : MonoBehaviour
 
     private void OnNarrationDone()
     {
-        NarrationManager.Instance.OnNarrationComplete -= OnNarrationDone;
+        // Null-check Instance — it could theoretically be destroyed before
+        // the coroutine finishes, which would crash without this guard.
+        if (NarrationManager.Instance != null)
+            NarrationManager.Instance.OnNarrationComplete -= OnNarrationDone;
+
         if (_player != null) _player.EnableInput();
         _player = null;
     }
