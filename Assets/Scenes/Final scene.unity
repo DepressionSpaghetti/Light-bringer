@@ -681,7 +681,7 @@ PrefabInstance:
       objectReference: {fileID: 5443290816979314544, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
     - target: {fileID: 213945615799507332, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
       propertyPath: _jumpForce
-      value: 3.9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 213945615799507332, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
       propertyPath: _walkSpeed
@@ -701,7 +701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 213945615799507332, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
       propertyPath: _projectileSpeed
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 213945615799507332, guid: 5fddced5d5671a84bab9a862f5ecd027, type: 3}
       propertyPath: _groundAcceleration
@@ -918,7 +918,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -926,7 +926,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1331180875
 Transform:
@@ -1075,7 +1075,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.62, y: 4.09, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4625, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1139,6 +1139,18 @@ PrefabInstance:
     - target: {fileID: 1292916438788179681, guid: 1befc3ec9044ac84fa29eac47f092921, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425398299261218390, guid: 1befc3ec9044ac84fa29eac47f092921, type: 3}
+      propertyPath: m_Mass
+      value: 1000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425398299261218390, guid: 1befc3ec9044ac84fa29eac47f092921, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425398299261218390, guid: 1befc3ec9044ac84fa29eac47f092921, type: 3}
+      propertyPath: m_Simulated
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5838159903072501711, guid: 1befc3ec9044ac84fa29eac47f092921, type: 3}
       propertyPath: m_Name

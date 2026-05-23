@@ -289,6 +289,9 @@ public class PlayerManagerScript : MonoBehaviour
     {
         _inputEnabled = false;
         _movementInput = Vector2.zero;
+        _animator.SetBool("Moving", false);
+        _animator.SetBool("Walking", false);
+        _animator.SetBool("Running", false);
     }
 
     public void EnableInput()

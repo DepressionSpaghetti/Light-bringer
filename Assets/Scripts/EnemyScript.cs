@@ -23,6 +23,7 @@ public class EnemyScript : MonoBehaviour
     private Rigidbody2D _rb;
     private Collider2D _col;
     private SpriteRenderer _sr;
+    [SerializeField] private Collider2D damagerComponent;
 
     // --- State ---
     private bool _movingRight = true;
@@ -39,6 +40,7 @@ public class EnemyScript : MonoBehaviour
         _col = GetComponent<Collider2D>();
         _sr = GetComponent<SpriteRenderer>();
         _rb.freezeRotation = true;
+        
     }
 
     private void FixedUpdate()
@@ -132,6 +134,7 @@ public class EnemyScript : MonoBehaviour
             {
                 if (hit.collider == _col) continue;
                 if (hit.collider.CompareTag("Player")) continue;
+                if (hit.collider.CompareTag("EnemyDamager")) continue;
                 return true;
             }
         }

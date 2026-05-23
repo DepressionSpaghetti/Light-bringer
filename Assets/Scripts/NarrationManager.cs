@@ -30,7 +30,7 @@ public class NarrationManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         BuildDictionary();
     }
