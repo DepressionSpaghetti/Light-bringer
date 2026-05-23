@@ -12,7 +12,8 @@ public class PlayerManagerScript : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Rigidbody2D _projectile;
-    [SerializeField]private Collider2D _projectileCollider;
+    [SerializeField] private Collider2D _projectileCollider;
+    [SerializeField] private Animator _animator;
 
     //movement variables
     private Vector2 _movementInput;
@@ -31,9 +32,12 @@ public class PlayerManagerScript : MonoBehaviour
 
     //projectile variables
     [SerializeField] private float _projectileSpeed;
+    [SerializeField] private float _projectileOffsetY;
 
     void Awake()
     {
+        _animator = GetComponent<Animator>();
+
         if(ControlManager.Instance == null)
         {
             Debug.LogError("ControlManager instance not found.");
@@ -108,6 +112,9 @@ public class PlayerManagerScript : MonoBehaviour
             FaceRight();
         else if (value.x < 0f && _facingRight)
             FaceLeft();
+
+        _animator.SetBool("Moving", value != Vector2.zero ? true : false);
+        _animator.SetBool("Walking", value != Vector2.zero && runSpeed == 1 ? true : false);
     }
 
     void OnJump()
@@ -117,13 +124,13 @@ public class PlayerManagerScript : MonoBehaviour
             Vector2 v = _rigidBody.linearVelocity;
             v.y = _jumpForce;
             _rigidBody.linearVelocity = v;
+            _animator.SetTrigger("Jump");
 
             //old jump velocity code
             //_rigidBody.AddForceY(_jumpForce + _rigidBody.linearVelocityX, ForceMode2D.Impulse);
             //_rigidBody.linearVelocityY = _jumpForce;
             //_rigidBody.linearVelocity = Vector2.ClampMagnitude(_rigidBody.linearVelocity, _walkSpeed * runSpeed);
         }
-
     }
 
     void OnRun(bool value)
@@ -132,26 +139,30 @@ public class PlayerManagerScript : MonoBehaviour
         {
             case true:
                 runSpeed = _maxRunSpeed;
+                _animator.SetBool("Running", value);
+                _animator.SetBool("Walking", false);
                 break;
             case false:
                 runSpeed = 1;
+                _animator.SetBool("Running", value);
                 break;
         }
+
     }
 
     void OnShoot()
     {
         //spawn projectile slightly in front of the player based on facing direction
         Vector2 spawnOffset = _facingRight ? Vector2.right * 0.3f : Vector2.left * 0.3f;
+        spawnOffset.y += _projectileOffsetY;
         Vector2 spawnPos = (Vector2)transform.position + spawnOffset;
         
         Rigidbody2D p = Instantiate(_projectile, spawnPos, Quaternion.identity);
 
         //ignore collision between player and projectile
-        //Collider2D projCol = p.GetComponent<Collider2D>();
         if(_projectileCollider != null && _collider != null)
         {
-            Physics2D.IgnoreCollision(_collider, _projectileCollider);
+            Physics2D.IgnoreCollision(_collider, p.GetComponent<Collider2D>(), true);
         }
 
         //set projectile direction based on player facing direction
@@ -161,20 +172,32 @@ public class PlayerManagerScript : MonoBehaviour
         p.transform.rotation = _facingRight ? Quaternion.identity : Quaternion.Euler(0f, 180f, 0f);
         p.linearVelocityX = projDirection.x * _projectileSpeed;
 
+        _animator.SetTrigger("Attack");
         //old
         //p.linearVelocity = transform.right * _projectileSpeed;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.CompareTag("Ground"))
+        {
             isAirborne = false;
+            _animator.SetBool("isAirborne", false);
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
+        {
             isAirborne = true;
+            _animator.SetBool("isAirborne", true);
+        }
     }
 
     private void FaceRight()
