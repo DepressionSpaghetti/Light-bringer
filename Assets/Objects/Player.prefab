@@ -58,7 +58,9 @@ MonoBehaviour:
   _jumpForce: 3.9
   runSpeed: 2
   _projectileSpeed: 2
-  _projectileOffsetY: 0
+  _projectileOffsetY: 0.5
+  attackDelay: 1.15
+  _maxHealth: 50
 --- !u!212 &8575258112070077645
 SpriteRenderer:
   serializedVersion: 2

@@ -33,6 +33,24 @@ public class PlayerManagerScript : MonoBehaviour
     //projectile variables
     [SerializeField] private float _projectileSpeed;
     [SerializeField] private float _projectileOffsetY;
+    [SerializeField] private float attackDelay = 1f;
+    private float _lastAttackTime = 0f;
+
+    //player health variables
+    public int CurrentHealth { get; private set; } = 50;
+    [SerializeField] private float _maxHealth = 50;
+    public int CurHP;
+    private bool isBeingDamaged = false;
+    private bool diedYet = false;
+    public bool Dead { get; private set; }
+
+    //time
+    private float period = 0.0f;
+    [SerializeField]private float _healTime = 0.1f;
+
+    private float periodDamage= 0.0f;
+    [SerializeField] private float _damageTime = 0.1f;
+
 
     void Awake()
     {
@@ -59,6 +77,28 @@ public class PlayerManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CurHP = CurrentHealth;
+        if ((!isBeingDamaged && !Dead) && CurrentHealth < _maxHealth && Time.time > period)
+        {
+            period = Time.time + _healTime;
+            CurrentHealth++;
+        }
+
+        else if (isBeingDamaged && CurrentHealth > 0 && Time.time > periodDamage)
+        {
+            Debug.Log("Damaging");
+            periodDamage = Time.time + _damageTime;
+            CurrentHealth--;
+        }
+
+        if (CurrentHealth <= 0 && !diedYet)
+        {
+            //death logic here
+            Dead = true;
+            _animator.SetTrigger("Died");
+            isBeingDamaged = false;
+            _animator.SetBool("isBeingDamaged", false);
+        }
 
     }
 
@@ -155,28 +195,35 @@ public class PlayerManagerScript : MonoBehaviour
 
     void OnShoot()
     {
-        if (!_inputEnabled) return;
-        //spawn projectile slightly in front of the player based on facing direction
-        Vector2 spawnOffset = _facingRight ? Vector2.right * 0.3f : Vector2.left * 0.3f;
-        spawnOffset.y += _projectileOffsetY;
-        Vector2 spawnPos = (Vector2)transform.position + spawnOffset;
-
-        Rigidbody2D p = Instantiate(_projectile, spawnPos, Quaternion.identity);
-
-        //ignore collision between player and projectile
-        if (_projectileCollider != null && _collider != null)
+        if(Time.time - _lastAttackTime < attackDelay)
+            return;
+        else
         {
-            Physics2D.IgnoreCollision(_collider, p.GetComponent<Collider2D>(), true);
-        }
+            //spawn projectile slightly in front of the player based on facing direction
+            Vector2 spawnOffset = _facingRight ? Vector2.right * 0.3f : Vector2.left * 0.3f;
+            spawnOffset.y += _projectileOffsetY;
+            Vector2 spawnPos = (Vector2)transform.position + spawnOffset;
+        
+            Rigidbody2D p = Instantiate(_projectile, spawnPos, Quaternion.identity);
 
-        //set projectile direction based on player facing direction
-        Vector2 projDirection = _facingRight ? Vector2.right : Vector2.left;
+            //ignore collision between player and projectile
+            if(_projectileCollider != null && _collider != null)
+            {
+                Physics2D.IgnoreCollision(_collider, p.GetComponent<Collider2D>(), true);
+            }
 
-        //set projectile rotation and velocity
-        p.transform.rotation = _facingRight ? Quaternion.identity : Quaternion.Euler(0f, 180f, 0f);
-        p.linearVelocityX = projDirection.x * _projectileSpeed;
+            //set projectile direction based on player facing direction
+            Vector2 projDirection = _facingRight ? Vector2.right : Vector2.left;
+
+            //set projectile rotation and velocity
+            p.transform.rotation = _facingRight ? Quaternion.identity : Quaternion.Euler(0f, 180f, 0f);
+            p.linearVelocityX = projDirection.x * _projectileSpeed;
+
+            _animator.SetTrigger("Attack");
+            _lastAttackTime = Time.time;
 
         _animator.SetTrigger("Attack");
+        }
         //old
         //p.linearVelocity = transform.right * _projectileSpeed;
     }
@@ -195,12 +242,31 @@ public class PlayerManagerScript : MonoBehaviour
 
     }
 
+
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
             isAirborne = true;
             _animator.SetBool("isAirborne", true);
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D trigger)
+    {
+        if (trigger.gameObject.CompareTag("EnemyDamager"))
+        {
+            isBeingDamaged = true;
+            _animator.SetBool("isBeingDamaged", true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D trigger)
+    {
+        if(trigger.gameObject.CompareTag("EnemyDamager"))
+        {
+            isBeingDamaged = false;
+            _animator.SetBool("isBeingDamaged", false);
         }
     }
 
